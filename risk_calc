@@ -1,0 +1,27 @@
+import sys
+
+def calculate_position_size():
+    print("=== RiskCalc CLI ===")
+    try:
+        account_equity = float(input("Enter total account equity ($): "))
+        risk_percentage = float(input("Enter risk percentage (e.g., 1 for 1%): ")) / 100
+        entry_price = float(input("Enter entry price: "))
+        stop_loss = float(input("Enter stop loss price: "))
+        
+        if entry_price == stop_loss:
+            print("Error: Entry price and stop loss cannot be the same.")
+            return
+            
+        cash_at_risk = account_equity * risk_percentage
+        risk_per_unit = abs(entry_price - stop_loss)
+        exact_position_size = cash_at_risk / risk_per_unit
+        
+        print("\n--- Execution Parameters ---")
+        print(f"Total Capital Risked: ${cash_at_risk:.2f}")
+        print(f"Exact Position Size to Allocate: {exact_position_size:.4f} units")
+        
+    except ValueError:
+        print("Please enter valid numerical values.")
+
+if __name__ == "__main__":
+    calculate_position_size()
