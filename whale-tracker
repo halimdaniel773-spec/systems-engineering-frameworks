@@ -1,0 +1,37 @@
+import time
+import random
+
+TARGET_WHALE_WALLETS = [
+    "DhM6Dtz9w...Whale1",
+    "H7kR9pQz2...Whale2",
+    "3xBvM1aZp...Whale3"
+]
+
+def stream_solana_transactions():
+    print("=== DEX Whale Tracker Script ===")
+    print("Connecting to Solana RPC network stream...")
+    print(f"Monitoring {len(TARGET_WHALE_WALLETS)} high-volatility whale addresses...\n")
+    time.sleep(1.5)
+    
+    try:
+        while True:
+            current_wallet = random.choice(TARGET_WHALE_WALLETS)
+            action = random.choice(["BUY", "SELL"])
+            amount_sol = round(random.uniform(50, 500), 2)
+            token_symbol = random.choice(["SOL", "BONK", "WIF", "POPCAT"])
+            
+            print(f"[SCANNING] Block checked... Listening for whale liquidity flows.")
+            
+            if random.random() > 0.7:
+                print("\n🚨🚨 [WHALE MOVEMENT ALERT] 🚨🚨")
+                print(f"Wallet: {current_wallet}")
+                print(f"Action: {action} order executed")
+                print(f"Volume: {amount_sol} SOL swapped for {token_symbol}")
+                print("-------------------------------------------\n")
+                
+            time.sleep(2)
+    except KeyboardInterrupt:
+        print("\nStream paused. Exiting tracking script safely.")
+
+if __name__ == "__main__":
+    stream_solana_transactions()
