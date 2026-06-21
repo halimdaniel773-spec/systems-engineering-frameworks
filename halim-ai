@@ -1,0 +1,56 @@
+import openai
+import pyttsx3
+import speech_recognition as sr
+import os
+
+# Initialize GPT (Retrieve your API key securely from environment variables)
+openai.api_key = os.getenv("OPENAI_API_KEY", "YOUR_API_KEY_HERE")
+
+# Initialize the text-to-speech engine
+engine = pyttsx3.init()
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def listen():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        audio = r.listen(source)
+        try:
+            command = r.recognize_google(audio)
+            print(f"You said: {command}")
+            return command
+        except sr.UnknownValueError:
+            speak("Sorry sir, I didn't catch that.")
+            return ""
+        except sr.RequestError:
+            speak("Sorry sir, I'm having trouble connecting.")
+            return ""
+
+def generate_response(prompt):
+    if "what is the meaning of your name" in prompt.lower():
+        return "Halim stands for Highly Advanced Language Interface Machine, sir."
+    else:
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            max_tokens=150
+        )
+        return response.choices[0].text.strip()
+
+def main():
+    speak("Hi, I am Halim. How can I assist you today, sir?")
+    
+    while True:
+        command = listen()
+        if "exit" in command.lower() or "quit" in command.lower():
+            speak("Goodbye, sir!")
+            break
+        elif command:
+            response = generate_response(command)
+            speak(response)
+
+if __name__ == "__main__":
+    main()
